@@ -1,0 +1,17 @@
+GET http://localhost:5017/cardapio
+
+###
+
+GET http://localhost:5017/cardapio/2
+
+###
+
+Post http://localhost:5017/cardapio
+Content-Type: application/json
+
+{
+  "nome": "Pizza",
+  "preco": 29.99
+}
+
+###
