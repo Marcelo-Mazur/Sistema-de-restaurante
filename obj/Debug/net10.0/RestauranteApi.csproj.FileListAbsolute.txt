@@ -146,3 +146,7 @@ C:\Users\marce\UP\DesenvolvimentoWebAvancado\RestauranteApi\obj\Debug\net10.0\re
 C:\Users\marce\UP\DesenvolvimentoWebAvancado\RestauranteApi\obj\Debug\net10.0\RestauranteApi.pdb
 C:\Users\marce\UP\DesenvolvimentoWebAvancado\RestauranteApi\obj\Debug\net10.0\RestauranteApi.genruntimeconfig.cache
 C:\Users\marce\UP\DesenvolvimentoWebAvancado\RestauranteApi\obj\Debug\net10.0\ref\RestauranteApi.dll
+C:\Users\marce\UP\DesenvolvimentoWebAvancado\RestauranteApi\obj\Debug\net10.0\RestauranteApi.sourcelink.json
+C:\Users\marce\UP\DesenvolvimentoWebAvancado\RestauranteApi\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\marce\UP\DesenvolvimentoWebAvancado\RestauranteApi\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\marce\UP\DesenvolvimentoWebAvancado\RestauranteApi\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll

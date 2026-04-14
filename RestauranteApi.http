@@ -15,3 +15,15 @@ Content-Type: application/json
 }
 
 ###
+
+Put http://localhost:5017/cardapio/3
+Content-Type: application/json
+
+{
+  "nome": "Calzone",
+  "preco": 39.99
+}
+
+###
+
+Delete http://localhost:5017/cardapio/4
