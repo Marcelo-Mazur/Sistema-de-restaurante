@@ -2877,19 +2877,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Nicolas\\.nuget\\packages\\": {}
+    "/home/Leonardo/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Nicolas\\Documents\\UP\\Sistema-de-restaurante\\RestauranteApi.csproj",
+      "projectUniqueName": "/home/Leonardo/Documentos/Sistema-de-restaurante/RestauranteApi.csproj",
       "projectName": "RestauranteApi",
-      "projectPath": "C:\\Users\\Nicolas\\Documents\\UP\\Sistema-de-restaurante\\RestauranteApi.csproj",
-      "packagesPath": "C:\\Users\\Nicolas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Nicolas\\Documents\\UP\\Sistema-de-restaurante\\obj\\",
+      "projectPath": "/home/Leonardo/Documentos/Sistema-de-restaurante/RestauranteApi.csproj",
+      "packagesPath": "/home/Leonardo/.nuget/packages/",
+      "outputPath": "/home/Leonardo/Documentos/Sistema-de-restaurante/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Nicolas\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/home/Leonardo/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
@@ -2957,7 +2957,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.202/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "/home/Leonardo/.dotnet/sdk/10.0.201/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
