@@ -1,10 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using RestauranteApi.Repositories;
 using RestauranteApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=restaurante.db"));
+
+builder.Services.AddScoped<ICardapioRepository, CardapioRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -17,56 +22,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//GET
-app.MapGet("/cardapio", async (AppDbContext db) =>
+using (var scope = app.Services.CreateScope())
 {
-    return await db.Lanches.ToListAsync();
-});
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.EnsureCreated();
+}
 
-//GET by id
-app.MapGet("/cardapio/{id}", async (int id, AppDbContext db) =>
-{
-    var lanche = await db.Lanches.FindAsync(id);
-    return lanche != null ? Results.Ok(lanche) : Results.NotFound();
-});
-
-//POST
-app.MapPost("/cardapio", async (Cardapio lanche, AppDbContext db) =>
-{
-    db.Lanches.Add(lanche);
-    await db.SaveChangesAsync();
-    return Results.Created($"O lanche {lanche.Nome} foi adicionado com sucesso!", lanche);
-});
-
-//PUT
-app.MapPut("/cardapio/{id}", async (int id, Cardapio lancheAtualizado, AppDbContext db) =>
-{
-    var lanche = await db.Lanches.FindAsync(id);
-    if (lanche == null)
-    {
-        return Results.NotFound("Lanche não encontrado.");
-    }
-
-    lanche.Nome = lancheAtualizado.Nome;
-    lanche.Preco = lancheAtualizado.Preco;
-
-    await db.SaveChangesAsync();
-    return Results.Ok(lanche);
-});
-
-//DELETE
-app.MapDelete("/cardapio/{id}", async (int id, AppDbContext db) =>
-{
-    var lanche = await db.Lanches.FindAsync(id);
-    if (lanche == null)
-    {
-        return Results.NotFound("Lanche não encontrado.");
-    }
-
-    db.Lanches.Remove(lanche);
-    await db.SaveChangesAsync();
-    return Results.NoContent();
-});
-
+app.UseHttpsRedirection();
+app.MapControllers();
 
 app.Run();
