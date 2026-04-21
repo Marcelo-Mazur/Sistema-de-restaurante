@@ -14,5 +14,16 @@ namespace RestauranteApi
         }
 
         public DbSet<Cardapio> Lanches => Set<Cardapio>();
+        public DbSet<Usuarios> Usuarios { get; set; }
+
+        public DbSet<TokenSessao> Tokens { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Usuarios>()
+                .Property(u => u.Tipo)
+                .HasConversion<string>();
+        }
+
     }
 }

@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "WppayoSWovU=",
+  "dgSpecHash": "5Yzg9Sd5C4E=",
   "success": true,
   "projectFilePath": "/home/Leonardo/Documentos/Sistema-de-restaurante/RestauranteApi.csproj",
   "expectedPackageFiles": [
+    "/home/Leonardo/.nuget/packages/bcrypt.net-next/4.1.0/bcrypt.net-next.4.1.0.nupkg.sha512",
     "/home/Leonardo/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/home/Leonardo/.nuget/packages/microsoft.build.framework/18.0.2/microsoft.build.framework.18.0.2.nupkg.sha512",
     "/home/Leonardo/.nuget/packages/microsoft.codeanalysis.analyzers/3.11.0/microsoft.codeanalysis.analyzers.3.11.0.nupkg.sha512",

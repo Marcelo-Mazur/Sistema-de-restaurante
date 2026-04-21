@@ -3,6 +3,7 @@ using RestauranteApi.Repositories;
 using RestauranteApi.Models; // Esse aqui tem que estar aqui!
 using RestauranteApi;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -14,6 +15,9 @@ builder.Services.AddScoped<ICardapioRepository, CardapioRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 var app = builder.Build();
 
