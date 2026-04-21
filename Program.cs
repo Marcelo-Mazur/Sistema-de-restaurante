@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RestauranteApi.Repositories;
+using RestauranteApi.Models; // Esse aqui tem que estar aqui!
 using RestauranteApi;
 
 var builder = WebApplication.CreateBuilder(args);

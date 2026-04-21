@@ -1,4 +1,5 @@
 using RestauranteApi;
+using RestauranteApi.Models;
 
 namespace RestauranteApi.Repositories
 {
