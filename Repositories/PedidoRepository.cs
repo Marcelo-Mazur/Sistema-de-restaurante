@@ -70,5 +70,24 @@ namespace RestauranteApi.Repositories
                 _context.SaveChanges();
             }
         }
+
+        public Pedido? GetCarrinhoByUsuario(int usuarioId)
+        {
+            return _context.Pedidos
+                .Include(p => p.Itens)
+                    .ThenInclude(i => i.Cardapio)
+                .Include(p => p.Pagamento)
+                .FirstOrDefault(p => p.UsuarioId == usuarioId && p.Status == RestauranteApi.Enums.StatusPedido.Aberto);
+        }
+
+        public void RemoverItem(int itemPedidoId)
+        {
+            var item = _context.ItensPedido.Find(itemPedidoId);
+            if (item != null)
+            {
+                _context.ItensPedido.Remove(item);
+                _context.SaveChanges();
+            }
+        }
     }
 }
