@@ -136,6 +136,16 @@ namespace RestauranteApi.Controllers
             return Ok("Item removido do carrinho");
         }
 
+        [HttpPut("carrinho/item/{itemPedidoId}")]
+        public IActionResult AtualizarQuantidadeItem(int itemPedidoId, [FromBody] int novaQuantidade)
+        {
+            if (novaQuantidade <= 0)
+                return BadRequest("A quantidade deve ser maior que zero.");
+
+            _pedidoRepo.AtualizarQuantidadeItem(itemPedidoId, novaQuantidade);
+            return Ok("Quantidade atualizada com sucesso");
+        }
+
         [HttpPost("carrinho/{usuarioId}/finalizar")]
         public IActionResult FinalizarCarrinho(int usuarioId)
         {

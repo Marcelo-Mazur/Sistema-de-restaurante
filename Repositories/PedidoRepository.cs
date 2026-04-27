@@ -89,5 +89,15 @@ namespace RestauranteApi.Repositories
                 _context.SaveChanges();
             }
         }
+
+        public void AtualizarQuantidadeItem(int itemPedidoId, int quantidade)
+        {
+            var item = _context.ItensPedido.Find(itemPedidoId);
+            if (item != null)
+            {
+                item.Quantidade = quantidade;
+                _context.SaveChanges();
+            }
+        }
     }
 }

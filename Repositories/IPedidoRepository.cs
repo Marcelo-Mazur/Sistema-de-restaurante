@@ -12,5 +12,6 @@ namespace RestauranteApi.Repositories
         void Update(Pedido pedido);
         void Delete(int id);
         void RemoverItem(int itemPedidoId);
+        void AtualizarQuantidadeItem(int itemPedidoId, int quantidade);
     }
 }
