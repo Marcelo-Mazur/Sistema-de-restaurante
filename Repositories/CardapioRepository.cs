@@ -1,6 +1,5 @@
 using RestauranteApi.Models;
 using RestauranteApi;
-using Microsoft.EntityFrameworkCore;
 
 namespace RestauranteApi.Repositories
 {
@@ -15,12 +14,12 @@ namespace RestauranteApi.Repositories
 
         public List<Cardapio> GetAll()
         {
-            return _context.Lanches.Include(c => c.Categoria).ToList();
+            return _context.Lanches.ToList();
         }
 
         public Cardapio? GetById(int id)
         {
-            return _context.Lanches.Include(c => c.Categoria).FirstOrDefault(c => c.Id == id);
+            return _context.Lanches.FirstOrDefault(c => c.Id == id);
         }
 
         public void Add(Cardapio cardapio)
@@ -38,7 +37,7 @@ namespace RestauranteApi.Repositories
 
             existente.Nome = cardapio.Nome;
             existente.Preco = cardapio.Preco;
-            existente.CategoriaId = cardapio.CategoriaId;
+            existente.Categoria = cardapio.Categoria;
 
             _context.SaveChanges();
         }

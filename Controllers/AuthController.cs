@@ -54,6 +54,7 @@ public class AuthController : ControllerBase
 
         return Ok(new { 
             mensagem = "Usuário cadastrado com sucesso!",
+            usuarioId = novoUsuario.Id,
             usuario = novoUsuario.Nome,
             token = tokenGerado 
         });
@@ -81,6 +82,7 @@ public class AuthController : ControllerBase
 
         return Ok(new { 
             mensagem = "Login realizado com sucesso!",
+            usuarioId = usuario.Id,
             usuario = usuario.Nome,
             token = tokenGerado 
         });
