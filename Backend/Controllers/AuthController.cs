@@ -2,6 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using RestauranteApi.Models;
 using RestauranteApi.Models.DTOs;
 using RestauranteApi.Repositories;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.Extensions.Configuration;
 using BCrypt.Net;
 
 namespace RestauranteApi.Controllers;
@@ -13,11 +18,39 @@ public class AuthController : ControllerBase
     private readonly IUsuarioRepository _repository;
     private readonly ITokenRepository _tokenRepository;
 
-    public AuthController(IUsuarioRepository repository, ITokenRepository tokenRepository)
+    private readonly IConfiguration _configuration;
+
+    public AuthController(IUsuarioRepository repository, ITokenRepository tokenRepository, IConfiguration configuration)
     {
         _repository = repository;
-        _tokenRepository = tokenRepository; 
+        _tokenRepository = tokenRepository;
+        _configuration = configuration;
     }
+    private string GerarTokenJwt(Usuarios usuario)
+    {
+        // Puxa a chave secreta que criamos
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        // Embute as informações do usuário dentro do token
+        var claims = new[]
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, usuario.Nome),
+            new Claim(JwtRegisteredClaimNames.Email, usuario.Email),
+            new Claim("id", usuario.Id.ToString()),
+            new Claim(ClaimTypes.Role, usuario.Tipo.ToString())
+        };
+
+        var token = new JwtSecurityToken(
+            issuer: _configuration["Jwt:Issuer"],
+            audience: _configuration["Jwt:Audience"],
+            claims: claims,
+            expires: DateTime.Now.AddHours(8), // Duração que estava no seu TokenSessao
+            signingCredentials: credentials);
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
 
     [HttpPost("cadastro")]
     public IActionResult Cadastro([FromBody] CadastroDto dto)
@@ -42,7 +75,7 @@ public class AuthController : ControllerBase
 
         _repository.Cadastrar(novoUsuario);
 
-        var tokenGerado = Guid.NewGuid().ToString(); 
+        var tokenGerado = GerarTokenJwt(novoUsuario); 
 
         var sessao = new TokenSessao
         {
@@ -70,7 +103,7 @@ public class AuthController : ControllerBase
             return Unauthorized(new { mensagem = "E-mail ou senha inválidos." });
         }
 
-        var tokenGerado = Guid.NewGuid().ToString();
+        var tokenGerado = GerarTokenJwt(usuario);
 
         var sessao = new TokenSessao
         {
