@@ -1,4 +1,8 @@
+import { useNavigate } from 'react-router-dom';
+
 export default function NavBar() {
+  const navigate = useNavigate();
+
   return (
     <nav style={{
       display: 'flex',
@@ -9,7 +13,7 @@ export default function NavBar() {
       height: '108px',
       width: '100%'
     }}>
-      <button style={{ 
+      <button onClick={() => navigate('/cardapio')}style={{ 
         width: '195px',
         height: '63px', 
         backgroundColor: '#7C0000', 
@@ -22,7 +26,7 @@ export default function NavBar() {
         WebkitTextStroke: '1px yellow' }}>
         Cardápio
       </button>
-      <button style={{ 
+      <button onClick={() => navigate('/carrinho')}style={{ 
         width: '195px', 
         height: '63px', 
         backgroundColor: '#7C0000', 
@@ -35,7 +39,7 @@ export default function NavBar() {
         WebkitTextStroke: '1px yellow' }}>
         Carrinho
       </button>
-      <button style={{ 
+      <button onClick={() => navigate('/pedidos')}style={{ 
         width: '195px', 
         height: '63px', 
         backgroundColor: '#7C0000', 

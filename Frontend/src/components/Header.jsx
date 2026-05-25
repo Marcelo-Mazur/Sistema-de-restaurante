@@ -1,4 +1,6 @@
+import { useNavigate } from "react-router-dom"
 export default function Header() {
+  const navigate = useNavigate();
   return (
     <nav style={{
       display: 'flex',
@@ -9,11 +11,11 @@ export default function Header() {
       height: '114px',
       color: '#FFE100'
     }}>
-      <h1 style={{ 
+      <h1 onClick={() => navigate('/cardapio')} style={{ 
         fontSize: '64px',
         fontFamily: 'Jomhuria, sans-serif'
       }}>Restaurante</h1>
-      <button style={{
+      <button onClick={() => navigate('/login')}style={{
         backgroundColor: '#FF0000',
         color: '#FFFFFF',
         border: '2px solid #F6FF00',
