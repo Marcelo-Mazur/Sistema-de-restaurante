@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 
 
 export default function Cadastro() {
+    const navigate = useNavigate();
     return (
             <div className="w-full">
                 <Header/>
