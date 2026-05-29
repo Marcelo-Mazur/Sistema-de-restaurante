@@ -34,21 +34,21 @@ export default function Login() {
 
     return (
         <div className="w-full">
-            <Header/>
-            <NavBar/>
-            
+            <Header />
+            <NavBar />
+
             <div style={{
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center', 
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
                 justifyContent: 'center',
             }}>
                 <h1 style={{
                     fontSize: '120px',
                     fontFamily: 'Jomhuria, sans-serif',
-                    marginBottom: '20px' 
+                    marginBottom: '20px'
                 }}>LOGIN</h1>
-                
+
                 <div style={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -58,44 +58,44 @@ export default function Login() {
                     width: '800px',
                     height: '456px',
                     backgroundColor: '#D9D9D9',
-                    gap: '30px' 
+                    gap: '30px'
                 }}>
-                    
+
                     <form onSubmit={addInfo}
-                    style={{
+                        style={{
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            gap: '20px' 
+                            gap: '20px'
                         }}>
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
                             <label style={{ fontSize: '24px', fontWeight: 'bold', fontFamily: 'sans-serif' }}>
                                 Email:
                             </label>
-                            <input 
+                            <input
                                 type="text"
                                 style={{
                                     width: '500px',
                                     height: '53px',
                                     borderRadius: '8px',
-                                    border: 'none', 
+                                    border: 'none',
                                     padding: '0 16px',
                                     backgroundColor: '#FFFFFF',
                                     fontSize: '18px',
-                                    outline: 'none' 
-                                }} 
+                                    outline: 'none'
+                                }}
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
 
-                        
+
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
                             <label style={{ fontSize: '24px', fontWeight: 'bold', fontFamily: 'sans-serif' }}>
                                 Senha:
                             </label>
-                            <input 
-                                type="password" 
+                            <input
+                                type="password"
                                 style={{
                                     width: '500px',
                                     height: '53px',
@@ -105,7 +105,7 @@ export default function Login() {
                                     fontSize: '18px',
                                     backgroundColor: '#FFFFFF',
                                     outline: 'none'
-                                }} 
+                                }}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
@@ -125,7 +125,7 @@ export default function Login() {
                         </button>
 
                     </form>
-                    
+
                     <button onClick={() => navigate('/cadastrar')} style={{
                         width: '257px',
                         height: '64px',
@@ -140,8 +140,8 @@ export default function Login() {
 
                 </div>
             </div>
-            
-            <Footer/>
+
+            <Footer />
         </div>
     );
 }

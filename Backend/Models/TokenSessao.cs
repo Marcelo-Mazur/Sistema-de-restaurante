@@ -12,7 +12,6 @@ namespace RestauranteApi.Models
 
         public int UsuarioId { get; set; }
 
-        // Relacionamento: Isso mostra pro professor que você sabe usar Objetos vinculados
         [ForeignKey("UsuarioId")]
         public Usuarios? Usuario { get; set; }
 
