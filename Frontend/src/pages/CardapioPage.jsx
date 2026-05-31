@@ -6,9 +6,9 @@ import NavBar  from "../components/NavBar";
 import Footer  from "../components/Footer";
 import Notification from "../components/Notification";
 
-import CategoryBar    from "../components/CategoryBar";
-import MenuCard       from "../components/MenuCard";
-import ItemModal      from "../components/ItemModal";
+import CategoryBar    from "../components/Categorybar";
+import MenuCard       from "../components/Menucard";
+import ItemModal      from "../components/Itemmodal";
 import { useCardapio } from "../hooks/useCardapio";
 import { useCart }     from "../hooks/useCart";
 import { resolveCategoryId, getCategoryName } from "../constants/categories";

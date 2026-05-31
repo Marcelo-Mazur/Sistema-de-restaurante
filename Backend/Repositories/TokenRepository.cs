@@ -16,4 +16,13 @@ public class TokenRepository : ITokenRepository
         _context.Tokens.Add(sessao);
         _context.SaveChanges();
     }
+    public void Excluir(string token)
+    {
+        var sessao = _context.Tokens.FirstOrDefault(t => t.Token == token);
+        if (sessao != null)
+        {
+            _context.Tokens.Remove(sessao);
+            _context.SaveChanges();
+        }
+    }
 }

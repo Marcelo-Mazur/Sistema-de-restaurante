@@ -1,6 +1,23 @@
 import { useNavigate } from "react-router-dom"
+import axios from "axios";
 export default function Header() {
   const navigate = useNavigate();
+  const token = localStorage.getItem('tokenSessao');
+
+  const handleLogout = async () => {
+    if (token) {
+      try {
+        const apiUrl = `${import.meta.env.VITE_API_URL}api/auth/logout`;
+        await axios.post(apiUrl, { token: token });
+      } catch (err) {
+        console.error("Erro ao limpar sessão no backend:", err);
+      }
+    }
+
+   
+    localStorage.removeItem('tokenSessao');
+    localStorage.removeItem('usuarioId');
+  }
   return (
     <nav style={{
       display: 'flex',
@@ -15,7 +32,7 @@ export default function Header() {
         fontSize: '64px',
         fontFamily: 'Jomhuria, sans-serif'
       }}>Restaurante</h1>
-      <button onClick={() => navigate('/login')}style={{
+      <button onClick={token ? handleLogout : () => navigate('/login')}style={{
         backgroundColor: '#FF0000',
         color: '#FFFFFF',
         border: '2px solid #F6FF00',
@@ -25,7 +42,7 @@ export default function Header() {
         fontFamily: 'Kumar One, sans-serif',
         cursor: 'pointer'
       }}>
-        Cadastro/Login
+        {token ? 'Logout' : 'Cadastro/Login'}
       </button>
     </nav>
   );

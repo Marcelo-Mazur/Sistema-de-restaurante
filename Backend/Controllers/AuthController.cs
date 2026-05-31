@@ -120,4 +120,17 @@ public class AuthController : ControllerBase
             token = tokenGerado 
         });
     }
-}
+
+    [HttpPost("logout")]
+    public IActionResult Logout([FromBody] LogoutDto dto)
+    {
+        if (string.IsNullOrEmpty(dto.Token))
+        {
+            return BadRequest(new { mensagem = "O token é obrigatório." });
+        }
+
+        _tokenRepository.Excluir(dto.Token);
+
+        return NoContent();
+    }
+    }

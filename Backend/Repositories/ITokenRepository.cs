@@ -5,4 +5,5 @@ namespace RestauranteApi.Repositories;
 public interface ITokenRepository
 {
     void Salvar(TokenSessao sessao);
+    void Excluir(string token);
 }

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { X, ShoppingBag, Check, Loader2 } from "lucide-react";
 import { getCategoryStyle, getCategoryName } from "../constants/categories";
-import QuantitySelector from "./QuantitySelector";
+import QuantitySelector from "./Quantityselector";
 
 
 export default function ItemModal({

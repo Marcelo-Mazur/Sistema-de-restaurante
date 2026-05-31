@@ -4,8 +4,8 @@ import { ShoppingCart, Loader2, ChefHat, AlertCircle } from "lucide-react";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import CarrinhoItem   from "../components/CarrinhoItem";
-import CarrinhoResumo from "../components/CarrinhoResumo";
+import CarrinhoItem   from "../components/Carrinhoitem";
+import CarrinhoResumo from "../components/Carrinhoresumo";
 import { useCarrinho } from "../hooks/useCarrinho";
 
 export default function Carrinho() {
