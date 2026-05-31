@@ -24,10 +24,16 @@ export default function Login() {
             const tokenDaApi = response.data.token;
             localStorage.setItem('tokenSessao', tokenDaApi);
 
+            const idDoUsuario = response.data.id || response.data.usuarioId; 
+            if (idDoUsuario) {
+                localStorage.setItem('usuarioId', idDoUsuario);
+            }
+
             alert("Login realizado com sucesso!");
             navigate('/cardapio');
         }).catch((err) => {
-            alert(err.response.data);
+            const mensagemErro = err.response?.data || "Erro ao conectar com o servidor.";
+            alert(mensagemErro);
         });
     }
 
