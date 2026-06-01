@@ -3,55 +3,19 @@ import { ArrowRight, LockKeyhole, Mail, UtensilsCrossed } from "lucide-react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
-import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import { useAuthForm } from "../hooks/useAuthForm";
 
 export default function Login() {
     const navigate = useNavigate();
+    const { feedback, submitting, login } = useAuthForm();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [submitting, setSubmitting] = useState(false);
-    const [feedback, setFeedback] = useState({ message: "", type: "success" });
 
     async function addInfo(e) {
         e.preventDefault();
-        setFeedback({ message: "", type: "success" });
-
-        if (submitting) {
-            return;
-        }
-
-        const apiUrl = `${import.meta.env.VITE_API_URL}api/auth/login`;
-        const body = {
-            email: email,
-            senha: password
-        };
-
-        try {
-            setSubmitting(true);
-            const response = await axios.post(apiUrl, body);
-
-            const tokenDaApi = response.data.token;
-            localStorage.setItem('tokenSessao', tokenDaApi);
-
-            const idDoUsuario = response.data.id || response.data.usuarioId;
-            if (idDoUsuario) {
-                localStorage.setItem('usuarioId', idDoUsuario);
-            }
-
-            setFeedback({ message: "Login realizado com sucesso! Redirecionando...", type: "success" });
-            setTimeout(() => navigate('/cardapio'), 700);
-        } catch (err) {
-            const mensagemErro =
-                typeof err.response?.data === "string"
-                    ? err.response.data
-                    : err.response?.data?.mensagem || "Erro ao conectar com o servidor.";
-
-            setFeedback({ message: mensagemErro, type: "error" });
-        } finally {
-            setSubmitting(false);
-        }
+        await login({ email, senha: password });
     }
 
 

@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { Search, X, ChefHat, Loader2 } from "lucide-react";
 
 import Header  from "../components/Header";
@@ -10,23 +10,15 @@ import CategoryBar    from "../components/Categorybar";
 import MenuCard       from "../components/Menucard";
 import ItemModal      from "../components/Itemmodal";
 import { useCardapio } from "../hooks/useCardapio";
-import { useCart }     from "../hooks/useCart";
+import { useCarrinho } from "../hooks/useCarrinho";
+import { useNotification } from "../hooks/useNotification";
 import { resolveCategoryId, getCategoryName } from "../constants/categories";
 
 export default function CardapioPage() {
-  const [notification, setNotification] = useState({ message: "", type: "success" });
-
-  const showNotification = useCallback((message, type = "success") => {
-    setNotification({ message, type });
-    setTimeout(() => setNotification({ message: "", type: "success" }), 4000);
-  }, []);
-
-  const clearNotification = useCallback(() => {
-    setNotification({ message: "", type: "success" });
-  }, []);
+  const { notification, showNotification, clearNotification } = useNotification({ autoHideDuration: 4000 });
 
   const { items, loading } = useCardapio(showNotification);
-  const { addToCart, addingToCart, successAnimation } = useCart(showNotification);
+  const { addToCart, addingToCart, successAnimation } = useCarrinho(showNotification, { carregarAoIniciar: false });
 
   const [searchTerm, setSearchTerm]           = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");

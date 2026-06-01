@@ -3,58 +3,21 @@ import { ArrowRight, AtSign, LockKeyhole, Sparkles, UserRound } from "lucide-rea
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
-import axios from "axios";
 import { useState } from "react";
+import { useAuthForm } from "../hooks/useAuthForm";
 
 
 export default function Cadastro() {
     const navigate = useNavigate();
+    const { feedback, submitting, cadastrar } = useAuthForm();
 
     const [email, setEmail] = useState('');
     const [nome, setNome] = useState('');
     const [password, setPassword] = useState('');
-    const [submitting, setSubmitting] = useState(false);
-    const [feedback, setFeedback] = useState({ message: "", type: "success" });
 
     async function addInfo(e) {
         e.preventDefault();
-        setFeedback({ message: "", type: "success" });
-
-        if (submitting) {
-            return;
-        }
-
-        const apiUrl = `${import.meta.env.VITE_API_URL}api/auth/cadastro`;
-        const body = {
-            email: email,
-            nome: nome,
-            senha: password
-        };
-
-        try {
-            setSubmitting(true);
-            const response = await axios.post(apiUrl, body);
-
-            const tokenDaApi = response.data.token;
-            localStorage.setItem('tokenSessao', tokenDaApi);
-
-            const idDoUsuario = response.data.id || response.data.usuarioId;
-            if (idDoUsuario) {
-                localStorage.setItem('usuarioId', idDoUsuario);
-            }
-
-            setFeedback({ message: "Conta criada com sucesso! Redirecionando...", type: "success" });
-            setTimeout(() => navigate('/cardapio'), 700);
-        } catch (err) {
-            const mensagemErro =
-                typeof err.response?.data === "string"
-                    ? err.response.data
-                    : err.response?.data?.mensagem || "Nao foi possivel concluir seu cadastro.";
-
-            setFeedback({ message: mensagemErro, type: "error" });
-        } finally {
-            setSubmitting(false);
-        }
+        await cadastrar({ nome, email, senha: password });
     }
 
     return (

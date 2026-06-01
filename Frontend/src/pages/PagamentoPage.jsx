@@ -1,4 +1,3 @@
-import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
 	ArrowLeft,
@@ -11,11 +10,13 @@ import {
 	Wallet,
 } from "lucide-react";
 
-import api from "../services/api";
+import CheckoutItem from "../components/CheckoutItem";
 import Header from "../components/Header";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import Notification from "../components/Notification";
+import PagamentoResumo from "../components/PagamentoResumo";
+import { useCheckout } from "../hooks/useCheckout";
 
 const FORMAS_PAGAMENTO = [
 	{
@@ -40,107 +41,19 @@ const FORMAS_PAGAMENTO = [
 
 export default function PagamentoPage() {
 	const navigate = useNavigate();
-
-	const [cartItems, setCartItems] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [erro, setErro] = useState("");
-	const [formaPagamento, setFormaPagamento] = useState(2);
-	const [finalizando, setFinalizando] = useState(false);
-	const [notification, setNotification] = useState({ message: "", type: "success" });
-
-	const total = useMemo(() => {
-		return cartItems.reduce((acc, item) => {
-			const preco = Number(item.cardapio?.preco ?? item.preco ?? item.precoUnitario ?? 0);
-			const quantidade = Number(item.quantidade ?? 0);
-			return acc + preco * quantidade;
-		}, 0);
-	}, [cartItems]);
-
-	const totalItens = useMemo(() => {
-		return cartItems.reduce((acc, item) => acc + Number(item.quantidade ?? 0), 0);
-	}, [cartItems]);
-
-	useEffect(() => {
-		carregarCarrinho();
-	}, [navigate]);
-
-	async function carregarCarrinho() {
-		const userId = localStorage.getItem("usuarioId");
-		const token = localStorage.getItem("tokenSessao");
-
-		if (!token || !userId) {
-			navigate("/login");
-			return;
-		}
-
-		try {
-			setLoading(true);
-			setErro("");
-
-			const response = await api.get(`api/pedidos/carrinho/${userId}`);
-			const itens = response.data?.itens || response.data?.Itens || [];
-			setCartItems(itens);
-		} catch (error) {
-			if (error.response?.status === 404) {
-				setCartItems([]);
-			} else {
-				setErro("Nao foi possivel carregar os itens do checkout.");
-			}
-		} finally {
-			setLoading(false);
-		}
-	}
-
-	async function finalizarCheckout() {
-		const userId = localStorage.getItem("usuarioId");
-		const token = localStorage.getItem("tokenSessao");
-
-		if (!token || !userId) {
-			navigate("/login");
-			return;
-		}
-
-		if (cartItems.length === 0 || finalizando) {
-			return;
-		}
-
-		try {
-			setFinalizando(true);
-			setErro("");
-
-			const finalizacao = await api.post(`api/pedidos/carrinho/${userId}/finalizar`);
-			const pedidoId = finalizacao.data?.pedidoId ?? finalizacao.data?.PedidoId;
-
-			if (!pedidoId) {
-				throw new Error("Pedido finalizado sem identificador de pedido.");
-			}
-
-			await api.post("api/pagamentos", {
-				pedidoId,
-				forma: formaPagamento,
-			});
-
-			setNotification({
-				message: "Pagamento confirmado! Seu pedido foi para preparo.",
-				type: "success",
-			});
-
-			window.dispatchEvent(new Event("cartUpdated"));
-			setTimeout(() => navigate("/pedidos"), 1000);
-		} catch (error) {
-			const mensagemApi =
-				typeof error.response?.data === "string"
-					? error.response.data
-					: error.response?.data?.mensagem;
-
-			setNotification({
-				message: mensagemApi || "Nao foi possivel concluir o pagamento.",
-				type: "error",
-			});
-		} finally {
-			setFinalizando(false);
-		}
-	}
+	const {
+		cartItems,
+		loading,
+		erro,
+		formaPagamento,
+		setFormaPagamento,
+		finalizando,
+		notification,
+		clearNotification,
+		total,
+		totalItens,
+		finalizarCheckout,
+	} = useCheckout();
 
 	if (loading) {
 		return (
@@ -166,7 +79,7 @@ export default function PagamentoPage() {
 			<Notification
 				message={notification.message}
 				type={notification.type}
-				onClose={() => setNotification({ message: "", type: "success" })}
+				onClose={clearNotification}
 			/>
 
 			<main className="mx-auto w-full max-w-[78rem] flex-1 px-[1rem] py-[1.3rem] sm:px-[1.5rem] lg:px-[2rem] lg:py-[1.75rem]">
@@ -212,95 +125,24 @@ export default function PagamentoPage() {
 						<section className="flex flex-col gap-[0.7rem] xl:col-span-2">
 							<h2 className="text-[1.02rem] font-bold text-zinc-900">Itens do pedido</h2>
 
-							{cartItems.map((item) => {
-								const nome = item.cardapio?.nome || item.nome || "Item";
-								const preco = Number(item.cardapio?.preco ?? item.preco ?? item.precoUnitario ?? 0);
-								const quantidade = Number(item.quantidade ?? 0);
-
-								return (
-									<article
-										key={item.id || `${item.cardapioId}-${nome}`}
-										className="flex items-center justify-between gap-[0.75rem] rounded-[1.15rem] border border-orange-200 bg-white/92 p-[0.95rem] shadow-[0_0.75rem_1.4rem_rgba(194,65,12,0.1)]"
-									>
-										<div>
-											<h3 className="font-bold text-zinc-900">{nome}</h3>
-											<p className="mt-[0.15rem] text-[0.78rem] text-zinc-600">
-												{quantidade} x R$ {preco.toFixed(2)}
-											</p>
-										</div>
-										<strong className="text-[1.1rem] text-brand-700">
-											R$ {(preco * quantidade).toFixed(2)}
-										</strong>
-									</article>
-								);
-							})}
+							{cartItems.map((item) => (
+								<CheckoutItem
+									key={item.id || `${item.cardapioId}-${item.nome || item.cardapio?.nome || "Item"}`}
+									item={item}
+								/>
+							))}
 						</section>
 
-						<aside className="sticky top-[1rem] h-fit rounded-[1.5rem] border border-orange-200 bg-white/90 p-[1.2rem] shadow-[0_1rem_1.8rem_rgba(194,65,12,0.13)]">
-							<h2 className="mb-[0.95rem] text-[1.2rem] font-bold text-zinc-900">Pagamento</h2>
-
-							<div className="mb-[1rem] space-y-[0.55rem]">
-								{FORMAS_PAGAMENTO.map((forma) => {
-									const Icone = forma.icone;
-									const selecionada = forma.id === formaPagamento;
-
-									return (
-										<label
-											key={forma.id}
-											className={`flex cursor-pointer items-center gap-[0.65rem] rounded-[0.9rem] border p-[0.65rem] transition-all ${
-												selecionada
-													? "border-brand-500 bg-brand-50"
-													: "border-orange-200 bg-white hover:border-brand-300"
-											}`}
-										>
-											<input
-												type="radio"
-												name="formaPagamento"
-												value={forma.id}
-												checked={selecionada}
-												onChange={() => setFormaPagamento(forma.id)}
-												className="accent-brand-600"
-											/>
-											<Icone className="h-[1rem] w-[1rem] text-zinc-700" />
-											<div>
-												<p className="text-[0.78rem] font-bold text-zinc-800">{forma.titulo}</p>
-												<p className="text-[0.72rem] text-zinc-600">{forma.descricao}</p>
-											</div>
-										</label>
-									);
-								})}
-							</div>
-
-							<div className="mb-[1rem] space-y-[0.6rem] border-t border-orange-200 pt-[0.8rem]">
-								<div className="flex justify-between text-[0.83rem] text-zinc-600">
-									<span>Itens</span>
-									<span>{totalItens}</span>
-								</div>
-								<div className="flex justify-between text-[0.83rem] text-zinc-600">
-									<span>Entrega</span>
-									<span className="text-emerald-700">Gratis</span>
-								</div>
-								<div className="flex items-center justify-between pt-[0.2rem]">
-									<span className="font-bold text-zinc-900">Total</span>
-									<span className="text-[1.85rem] font-bold text-brand-700">R$ {total.toFixed(2)}</span>
-								</div>
-							</div>
-
-							<button
-								onClick={finalizarCheckout}
-								disabled={finalizando || cartItems.length === 0}
-								className="flex h-[3rem] w-full items-center justify-center gap-[0.45rem] rounded-[0.95rem] bg-brand-600 text-[0.88rem] font-bold text-white transition-all hover:-translate-y-[0.04rem] hover:bg-brand-700 disabled:cursor-not-allowed disabled:bg-zinc-300 disabled:text-zinc-500 cursor-pointer"
-							>
-								{finalizando ? (
-									<>
-										<Loader2 className="h-[0.95rem] w-[0.95rem] animate-spin" />
-										Processando pagamento...
-									</>
-								) : (
-									"Confirmar e pagar"
-								)}
-							</button>
-						</aside>
+						<PagamentoResumo
+							formasPagamento={FORMAS_PAGAMENTO}
+							formaPagamento={formaPagamento}
+							onFormaPagamentoChange={setFormaPagamento}
+							totalItens={totalItens}
+							total={total}
+							finalizando={finalizando}
+							checkoutDisabled={cartItems.length === 0}
+							onFinalizar={finalizarCheckout}
+						/>
 					</div>
 				)}
 			</main>

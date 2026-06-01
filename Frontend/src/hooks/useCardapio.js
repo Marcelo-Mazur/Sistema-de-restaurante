@@ -21,7 +21,7 @@ export function useCardapio(showNotification) {
   }, [showNotification]);
 
   useEffect(() => {
-    fetchCardapio();
+    queueMicrotask(() => fetchCardapio());
   }, [fetchCardapio]);
 
   return { items, loading };
