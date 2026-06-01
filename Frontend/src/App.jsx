@@ -3,6 +3,7 @@ import Cardapio from "./pages/CardapioPage";
 import Cadastro from "./pages/CadastroPage";
 import Login from "./pages/LoginPage";
 import Carrinho from "./pages/CarrinhoPage";
+import Pagamento from "./pages/PagamentoPage";
 import Pedido from "./pages/PedidoPage";
 // import { useState } from 'react'
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="/cadastrar" element={<Cadastro />} /> 
         <Route path="/login" element={<Login />} />
         <Route path="/carrinho" element={<Carrinho />} />
+        <Route path="/checkout" element={<Pagamento />} />
         <Route path="/pedidos" element={<Pedido />} />
       </Routes>
     </BrowserRouter>

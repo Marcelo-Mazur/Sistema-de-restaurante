@@ -7,55 +7,54 @@ export default function MenuCard({ item, onOpen, onQuickAdd }) {
   const ItemIcon = style.Icon;
 
   return (
-    <div className="group relative bg-slate-900/50 border border-slate-800/80 hover:border-slate-700 rounded-3xl overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:shadow-black/40 hover:-translate-y-0.5">
+    <div className="group relative flex flex-col overflow-hidden rounded-[1.4rem] border border-orange-200/80 bg-white/92 shadow-[0_0.9rem_1.8rem_rgba(194,65,12,0.12)] transition-all duration-300 hover:-translate-y-[0.08rem] hover:border-brand-300 hover:shadow-[0_1.05rem_2rem_rgba(194,65,12,0.2)]">
 
       {/* Área da imagem / ícone */}
       <div
         onClick={() => onOpen(item)}
-        className={`relative cursor-pointer bg-gradient-to-br ${style.bg} flex items-center justify-center overflow-hidden`}
-        style={{ paddingBottom: "85%" }}
+        className={`relative flex cursor-pointer items-center justify-center overflow-hidden bg-gradient-to-br ${style.bg} pt-[85%]`}
       >
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="absolute w-32 h-32 rounded-full blur-3xl opacity-30 bg-white/20" />
+        <div className="absolute inset-0 flex items-center justify-center bg-[linear-gradient(180deg,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0)_45%,rgba(0,0,0,0.12)_100%)]">
+          <div className="absolute h-[8rem] w-[8rem] rounded-full bg-white/25 blur-3xl" />
           <ItemIcon
-            className={`w-20 h-20 sm:w-24 sm:h-24 ${style.text} relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-2`}
+            className={`relative z-10 h-[4.8rem] w-[4.8rem] ${style.text} transition-transform duration-300 group-hover:scale-110 group-hover:rotate-2 sm:h-[5.6rem] sm:w-[5.6rem]`}
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-3 z-20">
-          <span className="text-[10px] font-bold tracking-widest text-white bg-red-600/90 py-1 px-3 rounded-full uppercase border border-red-500/50 backdrop-blur-sm">
+        <div className="absolute inset-0 z-20 flex items-end justify-center bg-gradient-to-t from-zinc-900/45 via-transparent to-transparent pb-[0.8rem] opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <span className="rounded-full border border-white/45 bg-white/20 px-[0.7rem] py-[0.3rem] text-[0.6rem] font-bold uppercase tracking-[0.12em] text-white backdrop-blur-sm">
             Ver detalhes
           </span>
         </div>
       </div>
 
       {/* Informações */}
-      <div className="flex flex-col flex-1 p-5 sm:p-6">
-        <span className={`self-start inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg border mb-3.5 ${style.badge}`}>
+      <div className="flex flex-1 flex-col p-[1rem] sm:p-[1.2rem]">
+        <span className={`mb-[0.75rem] inline-flex w-fit items-center gap-[0.3rem] rounded-[0.6rem] border px-[0.55rem] py-[0.35rem] text-[0.62rem] font-bold uppercase tracking-[0.09em] ${style.badge}`}>
           {getCategoryName(categoryId)}
         </span>
 
         <div onClick={() => onOpen(item)} className="cursor-pointer flex-1">
-          <h3 className="text-sm font-bold text-slate-100 group-hover:text-white transition-colors line-clamp-1 mb-2 leading-tight">
+          <h3 className="mb-[0.4rem] line-clamp-1 text-[0.92rem] font-bold leading-tight text-zinc-900 transition-colors group-hover:text-brand-700">
             {item.nome}
           </h3>
-          <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
+          <p className="line-clamp-2 text-[0.73rem] leading-relaxed text-zinc-600">
             {item.descricao || `Delicioso ${item.nome?.toLowerCase()} preparado na hora.`}
           </p>
         </div>
 
-        <div className="flex items-center justify-between gap-2 mt-5 pt-4 border-t border-slate-800/60">
+        <div className="mt-[0.9rem] flex items-center justify-between gap-[0.5rem] border-t border-orange-200/75 pt-[0.75rem]">
           <div className="flex flex-col">
-            <span className="text-[10px] text-slate-600 font-medium">Preço</span>
-            <span className="text-base font-extrabold text-amber-400 leading-tight">
+            <span className="text-[0.62rem] font-semibold uppercase tracking-[0.08em] text-zinc-500">Preco</span>
+            <span className="text-[1rem] font-extrabold leading-tight text-brand-700">
               R$ {item.preco.toFixed(2)}
             </span>
           </div>
           <button
             onClick={(e) => { e.stopPropagation(); onQuickAdd(item); }}
             aria-label={`Adicionar ${item.nome} ao carrinho`}
-            className="flex items-center justify-center w-10 h-10 bg-slate-800 hover:bg-red-600 active:scale-90 text-slate-300 hover:text-white rounded-xl border border-slate-700 hover:border-red-500 transition-all duration-200 cursor-pointer shadow-sm"
+            className="flex h-[2.35rem] w-[2.35rem] items-center justify-center rounded-[0.8rem] border border-orange-200 bg-white text-brand-600 shadow-sm transition-all duration-200 hover:-translate-y-[0.03rem] hover:border-brand-500 hover:bg-brand-600 hover:text-white active:scale-95 cursor-pointer"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="h-[0.95rem] w-[0.95rem]" />
           </button>
         </div>
       </div>

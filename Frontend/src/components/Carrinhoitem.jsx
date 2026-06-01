@@ -6,50 +6,50 @@ export default function CarrinhoItem({ item, onAtualizar, onRemover }) {
   const id    = item.id || item.cardapioId;
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-slate-900/60 border border-slate-800 rounded-2xl hover:border-slate-700 transition-colors gap-4">
+    <div className="flex flex-col justify-between gap-[0.9rem] rounded-[1.25rem] border border-orange-200 bg-white/92 p-[1rem] shadow-[0_0.8rem_1.65rem_rgba(194,65,12,0.1)] transition-colors hover:border-brand-300 sm:flex-row sm:items-center">
 
       <div className="flex flex-col gap-3">
         <div>
-          <h3 className="text-lg font-bold text-white">{nome}</h3>
-          <span className="text-sm text-slate-400">
+          <h3 className="text-[1.05rem] font-bold text-zinc-900">{nome}</h3>
+          <span className="text-[0.78rem] text-zinc-600">
             Valor unitário: R$ {preco.toFixed(2)}
           </span>
         </div>
 
-        <div className="flex items-center gap-3 bg-slate-950 w-fit p-1 rounded-xl border border-slate-800">
+        <div className="flex w-fit items-center gap-[0.5rem] rounded-[0.85rem] border border-orange-200 bg-orange-50/60 p-[0.3rem]">
           <button
             onClick={() => onAtualizar(id, item.quantidade, -1)}
-            className="p-1.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white rounded-lg transition-colors cursor-pointer"
+            className="rounded-[0.65rem] border border-orange-200 bg-white p-[0.42rem] text-zinc-600 transition-colors hover:text-brand-700 cursor-pointer"
           >
-            <Minus className="w-4 h-4" />
+            <Minus className="h-[0.8rem] w-[0.8rem]" />
           </button>
-          <span className="w-6 text-center text-sm font-bold text-slate-200">
+          <span className="w-[1.6rem] text-center text-[0.86rem] font-bold text-zinc-800">
             {item.quantidade}
           </span>
           <button
             onClick={() => onAtualizar(id, item.quantidade, 1)}
-            className="p-1.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white rounded-lg transition-colors cursor-pointer"
+            className="rounded-[0.65rem] border border-orange-200 bg-white p-[0.42rem] text-zinc-600 transition-colors hover:text-brand-700 cursor-pointer"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="h-[0.8rem] w-[0.8rem]" />
           </button>
         </div>
       </div>
 
-      <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-6 border-t border-slate-800/50 sm:border-0 pt-4 sm:pt-0 mt-2 sm:mt-0">
+      <div className="mt-[0.2rem] flex w-full items-center justify-between gap-[0.9rem] border-t border-orange-200/70 pt-[0.8rem] sm:mt-0 sm:w-auto sm:justify-end sm:border-0 sm:pt-0">
         <div className="flex flex-col items-end">
-          <span className="text-xs text-slate-500 font-medium mb-1 hidden sm:block">
+          <span className="mb-[0.2rem] hidden text-[0.65rem] font-medium uppercase tracking-[0.06em] text-zinc-500 sm:block">
             Subtotal do item
           </span>
-          <span className="text-xl font-bold text-amber-400">
+          <span className="text-[1.3rem] font-bold text-brand-700">
             R$ {(preco * item.quantidade).toFixed(2)}
           </span>
         </div>
         <button
           onClick={() => onRemover(id)}
           title="Remover item"
-          className="p-2.5 text-slate-500 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all cursor-pointer"
+          className="rounded-[0.8rem] p-[0.52rem] text-zinc-500 transition-all hover:bg-red-50 hover:text-red-600 cursor-pointer"
         >
-          <Trash2 className="w-5 h-5" />
+          <Trash2 className="h-[1rem] w-[1rem]" />
         </button>
       </div>
     </div>

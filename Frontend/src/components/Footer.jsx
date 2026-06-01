@@ -1,21 +1,12 @@
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer style={{
-      position: 'fixed',
-      bottom: 0,
-      left: 0,
-      width: '100%',
-      height: '92px',
-      backgroundColor: '#1a1a1a',
-      color: 'white',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 1000,
-      fontFamily: 'Sansita, sans-serif',
-      fontSize: '24px'
-    }}>
-      <p>© 2026 Restaurante. Todos os direitos reservados.</p>
+    <footer className="mt-auto border-t border-orange-300/70 bg-white/75 backdrop-blur-md">
+      <div className="mx-auto flex w-full max-w-[78rem] flex-col items-center justify-between gap-[0.5rem] px-[1rem] py-[1.1rem] text-center text-[0.82rem] text-zinc-600 sm:flex-row sm:px-[1.5rem] lg:px-[2rem]">
+        <p>© {currentYear} Sabor de Dev. Todos os direitos reservados.</p>
+        <p className="text-zinc-500">Feito com React + Tailwind.</p>
+      </div>
     </footer>
   );
 }

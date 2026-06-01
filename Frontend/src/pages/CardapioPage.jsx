@@ -55,7 +55,7 @@ export default function CardapioPage() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+    <div className="flex min-h-screen w-full flex-col text-zinc-900">
       <Header />
       <NavBar />
 
@@ -66,32 +66,32 @@ export default function CardapioPage() {
       />
 
       {/* Toolbar fixa com busca e categorias */}
-      <div className="sticky top-0 z-30 bg-slate-950/90 backdrop-blur-xl border-b border-slate-800/60 shadow-lg shadow-black/20">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+      <div className="sticky top-[calc(var(--header-height)+var(--nav-height))] z-30 border-b border-orange-200/45 bg-white/40 backdrop-blur-xl">
+        <div className="mx-auto flex w-full max-w-[78rem] flex-col gap-[0.75rem] px-[1rem] py-[0.8rem] sm:px-[1.5rem] lg:flex-row lg:items-center lg:px-[2rem]">
 
           {/* Campo de busca */}
-          <div className="relative sm:w-72 shrink-0">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
+          <div className="relative w-full lg:w-[19rem] lg:shrink-0">
+            <Search className="pointer-events-none absolute left-[0.95rem] top-1/2 h-[0.9rem] w-[0.9rem] -translate-y-1/2 text-zinc-400" />
             <input
               type="text"
               placeholder="Buscar no cardápio..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-11 pr-11 py-3.5 bg-slate-800/60 border border-slate-700/60 rounded-2xl text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-red-500/60 focus:ring-1 focus:ring-red-500/30 transition-all"
+              className="h-[2.85rem] w-full rounded-[0.95rem] border border-orange-200 bg-white pl-[2.6rem] pr-[2.5rem] text-[0.9rem] text-zinc-800 outline-none transition-all placeholder:text-zinc-400 focus:border-brand-400 focus:ring-[0.2rem] focus:ring-brand-100"
             />
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm("")}
                 aria-label="Limpar busca"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 cursor-pointer transition-colors"
+                className="absolute right-[0.7rem] top-1/2 -translate-y-1/2 rounded-full p-[0.25rem] text-zinc-400 transition-colors hover:text-zinc-700 cursor-pointer"
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="h-[0.8rem] w-[0.8rem]" />
               </button>
             )}
           </div>
 
           {/* Categorias */}
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 overflow-hidden rounded-[1rem] border border-orange-200/80 bg-orange-50/55 px-[0.45rem] py-[0.35rem]">
             <CategoryBar
               selectedCategory={selectedCategory}
               onSelect={setSelectedCategory}
@@ -101,26 +101,26 @@ export default function CardapioPage() {
       </div>
 
       {/* Conteúdo principal */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-6 sm:px-8 py-8 pb-32">
+      <main className="mx-auto w-full max-w-[78rem] flex-1 px-[1rem] py-[1.3rem] sm:px-[1.5rem] lg:px-[2rem] lg:py-[1.75rem]">
 
         {/* Cabeçalho de resultados */}
         {!loading && (
-          <div className="flex items-center justify-between mb-7">
+          <div className="mb-[1rem] flex flex-wrap items-center justify-between gap-[0.65rem]">
             <div>
-              <h2 className="text-base font-bold text-slate-200">
+              <h2 className="text-[1rem] font-bold text-zinc-900">
                 {selectedCategory === "all"
                   ? "Cardápio completo"
                   : getCategoryName(selectedCategory)}
               </h2>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="mt-[0.16rem] text-[0.74rem] text-zinc-500">
                 {filteredItems.length}{" "}
                 {filteredItems.length === 1 ? "item" : "itens"} disponíveis
               </p>
             </div>
             {searchTerm && (
-              <span className="text-xs text-slate-500 bg-slate-800 border border-slate-700 px-2.5 py-1 rounded-lg">
+              <span className="rounded-[0.65rem] border border-orange-200 bg-white px-[0.6rem] py-[0.35rem] text-[0.72rem] text-zinc-600">
                 Busca:{" "}
-                <span className="text-slate-300 font-medium">"{searchTerm}"</span>
+                <span className="font-semibold text-zinc-800">"{searchTerm}"</span>
               </span>
             )}
           </div>
@@ -132,7 +132,7 @@ export default function CardapioPage() {
         ) : filteredItems.length === 0 ? (
           <EmptyState onClear={() => { setSearchTerm(""); setSelectedCategory("all"); }} />
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 gap-[0.75rem] sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
             {filteredItems.map((item) => (
               <MenuCard
                 key={item.id}
@@ -162,17 +162,15 @@ export default function CardapioPage() {
   );
 }
 
-// ── Sub-componentes de estado (internos à página) ─────────────────────────────
-
 function LoadingState() {
   return (
-    <div className="flex flex-col items-center justify-center py-24 gap-4">
-      <div className="w-16 h-16 rounded-2xl bg-red-600/10 border border-red-500/20 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-red-500 animate-spin" />
+    <div className="flex flex-col items-center justify-center gap-[0.8rem] py-[5rem]">
+      <div className="flex h-[3.9rem] w-[3.9rem] items-center justify-center rounded-[1rem] border border-brand-200 bg-brand-50">
+        <Loader2 className="h-[1.8rem] w-[1.8rem] animate-spin text-brand-600" />
       </div>
       <div className="text-center">
-        <p className="text-slate-300 font-semibold">Carregando cardápio</p>
-        <p className="text-slate-500 text-sm mt-1">Preparando tudo com carinho...</p>
+        <p className="font-semibold text-zinc-800">Carregando cardapio</p>
+        <p className="mt-[0.15rem] text-[0.82rem] text-zinc-600">Preparando tudo com carinho...</p>
       </div>
     </div>
   );
@@ -180,17 +178,17 @@ function LoadingState() {
 
 function EmptyState({ onClear }) {
   return (
-    <div className="flex flex-col items-center justify-center py-20 text-center px-4">
-      <div className="w-16 h-16 bg-slate-800/60 border border-slate-700 rounded-2xl flex items-center justify-center mb-4 shadow-inner">
-        <ChefHat className="w-8 h-8 text-slate-500" />
+    <div className="flex flex-col items-center justify-center px-[1rem] py-[4.2rem] text-center">
+      <div className="mb-[0.8rem] flex h-[4.1rem] w-[4.1rem] items-center justify-center rounded-[1rem] border border-orange-200 bg-white shadow-[0_0.8rem_1.5rem_rgba(194,65,12,0.1)]">
+        <ChefHat className="h-[2rem] w-[2rem] text-brand-500" />
       </div>
-      <h3 className="text-lg font-bold text-slate-300">Nenhum item encontrado</h3>
-      <p className="text-slate-500 text-sm mt-1.5 max-w-xs leading-relaxed">
+      <h3 className="text-[1.1rem] font-bold text-zinc-900">Nenhum item encontrado</h3>
+      <p className="mt-[0.3rem] max-w-[20rem] text-[0.83rem] leading-relaxed text-zinc-600">
         Não encontramos nada com esses filtros. Tente outra busca ou categoria.
       </p>
       <button
         onClick={onClear}
-        className="mt-5 px-5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-sm font-semibold rounded-xl transition-colors cursor-pointer"
+        className="mt-[0.9rem] inline-flex h-[2.6rem] items-center justify-center rounded-[0.85rem] border border-brand-300 bg-brand-600 px-[1rem] text-[0.82rem] font-semibold text-white transition-all hover:bg-brand-700 cursor-pointer"
       >
         Limpar filtros
       </button>

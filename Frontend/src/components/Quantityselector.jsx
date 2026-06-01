@@ -3,28 +3,28 @@ import { Plus, Minus } from "lucide-react";
 
 export default function QuantitySelector({ quantity, onChange }) {
   return (
-    <div className="flex items-center justify-between bg-slate-950/60 border border-slate-800 rounded-2xl px-5 py-4">
-      <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+    <div className="flex items-center justify-between rounded-[1rem] border border-orange-200 bg-orange-50/60 px-[1rem] py-[0.85rem]">
+      <span className="text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-zinc-500">
         Quantidade
       </span>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-[0.65rem]">
         <button
           onClick={() => onChange((prev) => Math.max(1, prev - 1))}
           disabled={quantity <= 1}
           aria-label="Diminuir quantidade"
-          className="w-10 h-10 flex items-center justify-center bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
+          className="flex h-[2.2rem] w-[2.2rem] items-center justify-center rounded-[0.75rem] border border-orange-200 bg-white text-zinc-600 transition-colors hover:text-brand-700 disabled:pointer-events-none disabled:opacity-35 cursor-pointer"
         >
-          <Minus className="w-4 h-4" />
+          <Minus className="h-[0.9rem] w-[0.9rem]" />
         </button>
-        <span className="text-lg font-bold text-white w-7 text-center tabular-nums">
+        <span className="w-[1.8rem] text-center text-[1.05rem] font-bold tabular-nums text-zinc-900">
           {quantity}
         </span>
         <button
           onClick={() => onChange((prev) => prev + 1)}
           aria-label="Aumentar quantidade"
-          className="w-10 h-10 flex items-center justify-center bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl transition-colors cursor-pointer"
+          className="flex h-[2.2rem] w-[2.2rem] items-center justify-center rounded-[0.75rem] border border-orange-200 bg-white text-zinc-600 transition-colors hover:text-brand-700 cursor-pointer"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="h-[0.9rem] w-[0.9rem]" />
         </button>
       </div>
     </div>

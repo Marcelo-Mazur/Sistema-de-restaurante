@@ -16,7 +16,6 @@ export default function ItemModal({
   const { categoryId, style } = getCategoryStyle(item);
   const ModalIcon = style.Icon;
 
-  // Bloqueia scroll do body enquanto o modal está aberto
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = ""; };
@@ -25,63 +24,55 @@ export default function ItemModal({
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
 
-      {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-zinc-900/45 backdrop-blur-[0.18rem]"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Painel — bottom-sheet no mobile, modal centralizado no sm+ */}
-      <div className="relative w-full sm:max-w-md bg-slate-900 sm:rounded-3xl rounded-t-3xl border border-slate-800 shadow-2xl z-10 overflow-hidden flex flex-col max-h-[92dvh] sm:max-h-[88vh]">
-
-        {/* Botão fechar */}
+      <div className="relative z-10 flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-[1.6rem] border border-orange-200 bg-white sm:max-h-[88vh] sm:max-w-[26rem] sm:rounded-[1.6rem] sm:shadow-warm">
         <button
           onClick={onClose}
           aria-label="Fechar modal"
-          className="absolute right-5 top-5 z-20 p-2.5 bg-slate-800/90 hover:bg-slate-700 text-slate-400 hover:text-white rounded-full transition-colors cursor-pointer backdrop-blur-md"
+          className="absolute right-[1rem] top-[1rem] z-20 rounded-full border border-orange-200 bg-white/90 p-[0.55rem] text-zinc-500 backdrop-blur-sm transition-colors hover:text-zinc-800 cursor-pointer"
         >
-          <X className="w-4 h-4" />
+          <X className="h-[0.9rem] w-[0.9rem]" />
         </button>
 
-        {/* Alça de arrasto (apenas mobile) */}
-        <div className="sm:hidden flex justify-center pt-4 pb-2 shrink-0">
-          <div className="w-10 h-1 rounded-full bg-slate-700" />
+        <div className="shrink-0 pb-[0.4rem] pt-[0.8rem] sm:hidden flex justify-center">
+          <div className="h-[0.2rem] w-[2.5rem] rounded-full bg-zinc-300" />
         </div>
 
-        {/* Hero com ícone */}
         <div
-          className={`relative bg-gradient-to-br ${style.bg} flex items-center justify-center shrink-0`}
-          style={{ minHeight: "220px" }}
+          className={`relative flex min-h-[13.75rem] shrink-0 items-center justify-center bg-gradient-to-br ${style.bg}`}
         >
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-48 h-48 bg-white/10 rounded-full blur-3xl" />
+            <div className="h-[12rem] w-[12rem] rounded-full bg-white/20 blur-3xl" />
           </div>
-          <ModalIcon className={`w-32 h-32 ${style.text} relative z-10 drop-shadow-2xl`} />
-          <span className={`absolute bottom-4 left-5 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full border backdrop-blur-sm ${style.badge}`}>
+          <ModalIcon className={`relative z-10 h-[7.4rem] w-[7.4rem] ${style.text} drop-shadow-2xl`} />
+          <span className={`absolute bottom-[0.9rem] left-[1rem] inline-flex items-center gap-[0.35rem] rounded-full border px-[0.75rem] py-[0.35rem] text-[0.63rem] font-bold uppercase tracking-[0.09em] backdrop-blur-sm ${style.badge}`}>
             {getCategoryName(categoryId)}
           </span>
         </div>
 
-        {/* Conteúdo */}
-        <div className="flex flex-col flex-1 p-6 sm:p-8 overflow-y-auto gap-5">
+        <div className="flex flex-1 flex-col gap-[1.1rem] overflow-y-auto p-[1.25rem] sm:p-[1.6rem]">
           <div>
-            <h2 className="text-2xl font-extrabold text-white leading-tight mb-2">
+            <h2 className="mb-[0.45rem] text-[1.7rem] font-extrabold leading-tight text-zinc-900">
               {item.nome}
             </h2>
-            <p className="text-sm text-slate-400 leading-relaxed">
+            <p className="text-[0.86rem] leading-relaxed text-zinc-600">
               {item.descricao || `Nossa versão exclusiva de ${item.nome}. Preparado com maestria pela nossa cozinha.`}
             </p>
           </div>
 
           <QuantitySelector quantity={quantity} onChange={onQuantityChange} />
 
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center justify-between gap-[0.8rem]">
             <div>
-              <p className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider mb-1">
+              <p className="mb-[0.2rem] text-[0.62rem] font-semibold uppercase tracking-[0.08em] text-zinc-500">
                 Total
               </p>
-              <p className="text-2xl font-extrabold text-amber-400 leading-none">
+              <p className="text-[1.7rem] font-extrabold leading-none text-brand-700">
                 R$ {(item.preco * quantity).toFixed(2)}
               </p>
             </div>
@@ -90,21 +81,21 @@ export default function ItemModal({
               onClick={() => onAddToCart(item, quantity)}
               disabled={addingToCart || successAnimation}
               className={`
-                flex-1 py-4 px-5 rounded-2xl font-bold text-sm tracking-wide
+                flex-1 rounded-[1rem] border px-[1rem] py-[0.9rem] text-[0.85rem] font-bold tracking-wide
                 flex items-center justify-center gap-2
                 transition-all cursor-pointer border
                 ${successAnimation
-                  ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/40"
-                  : "bg-red-600 hover:bg-red-500 active:scale-95 text-white border-red-500 shadow-lg shadow-red-900/20"
+                  ? "border-emerald-400 bg-emerald-50 text-emerald-700"
+                  : "border-brand-600 bg-brand-600 text-white shadow-[0_0.8rem_1.6rem_rgba(185,71,15,0.26)] hover:bg-brand-700 active:scale-95"
                 }
               `}
             >
               {successAnimation ? (
-                <><Check className="w-4 h-4" /> Adicionado!</>
+                <><Check className="h-[0.9rem] w-[0.9rem]" /> Adicionado!</>
               ) : addingToCart ? (
-                <><Loader2 className="w-4 h-4 animate-spin" /> Processando...</>
+                <><Loader2 className="h-[0.9rem] w-[0.9rem] animate-spin" /> Processando...</>
               ) : (
-                <><ShoppingBag className="w-4 h-4" /> Adicionar ao carrinho</>
+                <><ShoppingBag className="h-[0.9rem] w-[0.9rem]" /> Adicionar ao carrinho</>
               )}
             </button>
           </div>

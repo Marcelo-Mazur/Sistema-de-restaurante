@@ -8,8 +8,7 @@ export default function CategoryBar({ selectedCategory, onSelect }) {
   return (
     <div
       ref={scrollRef}
-      className="flex gap-2.5 overflow-x-auto pb-1 -mx-1 px-1"
-      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      className="hide -mx-[0.25rem] flex gap-[0.55rem] overflow-x-auto px-[0.25rem] pb-[0.2rem] [scrollbar-width:none] [-ms-overflow-style:none]"
     >
       {CATEGORIES.map(({ id, name, Icon }) => {
         const active = selectedCategory === id;
@@ -18,15 +17,16 @@ export default function CategoryBar({ selectedCategory, onSelect }) {
             key={id}
             onClick={() => onSelect(id)}
             className={`
-              flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold
-              whitespace-nowrap shrink-0 transition-all duration-200 cursor-pointer
+              inline-flex h-[2.4rem] items-center gap-[0.45rem] rounded-[0.85rem]
+              whitespace-nowrap shrink-0 border px-[0.9rem] text-[0.78rem] font-semibold
+              tracking-[0.01em] transition-all duration-200 cursor-pointer
               ${active
-                ? "bg-red-600 text-white shadow-lg shadow-red-600/30 scale-[1.03]"
-                : "bg-slate-800/70 border border-slate-700/60 text-slate-400 hover:text-slate-200 hover:bg-slate-700/70 hover:border-slate-600"
+                ? "border-brand-600 bg-brand-600 text-white"
+                : "border-orange-200/90 bg-white text-zinc-700 hover:-translate-y-[0.04rem] hover:border-brand-300 hover:bg-brand-50"
               }
             `}
           >
-            <Icon className="w-3.5 h-3.5" />
+            <Icon className="h-[0.9rem] w-[0.9rem]" />
             <span className="hidden sm:inline">{name}</span>
             <span className="sm:hidden">{name.split(" ")[0]}</span>
           </button>
