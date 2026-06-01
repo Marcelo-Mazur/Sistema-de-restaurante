@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using RestauranteApi.Repositories;
 using RestauranteApi.Models; // Esse aqui tem que estar aqui!
 using RestauranteApi;
+using RestauranteApi.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -65,6 +66,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
+    DatabaseSeeder.Seed(db);
 }
 
 // app.UseHttpsRedirection();

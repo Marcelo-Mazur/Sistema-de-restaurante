@@ -1,27 +1,15 @@
 import { LogIn, LogOut, UtensilsCrossed } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
-  const token = localStorage.getItem('tokenSessao');
+  const { token, logout } = useAuth();
   const onAuthScreen = location.pathname === "/login" || location.pathname === "/cadastrar";
 
   const handleLogout = async () => {
-    if (token) {
-      try {
-        const apiUrl = `${import.meta.env.VITE_API_URL}api/auth/logout`;
-        await axios.post(apiUrl, { token: token });
-      } catch (err) {
-        console.error("Erro ao limpar sessão no backend:", err);
-      }
-    }
-
-   
-    localStorage.removeItem('tokenSessao');
-    localStorage.removeItem('usuarioId');
-    navigate('/login');
+    await logout();
   };
 
   const handleAction = async () => {

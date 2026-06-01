@@ -1,21 +1,33 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import { useAuth } from "./useAuth";
 
-export function useCarrinho() {
-  const navigate = useNavigate();
+function calcularTotal(itens) {
+  return itens.reduce((acc, item) => {
+    const preco = item.cardapio?.preco || item.preco || item.precoUnitario || 0;
+    return acc + preco * item.quantidade;
+  }, 0);
+}
+
+export function useCarrinho(showNotification, options = {}) {
+  const { requireAuth } = useAuth();
+  const { carregarAoIniciar = true } = options;
 
   const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading]     = useState(true);
-  const [total, setTotal]         = useState(0);
-  const [erro, setErro]           = useState(null);
+  const [loading, setLoading] = useState(carregarAoIniciar);
+  const [total, setTotal] = useState(0);
+  const [erro, setErro] = useState(null);
+  const [addingToCart, setAddingToCart] = useState(false);
+  const [successAnimation, setSuccessAnimation] = useState(false);
+
+  const resetSuccess = useCallback(() => {
+    setSuccessAnimation(false);
+  }, []);
 
   const carregarCarrinho = useCallback(async (primeiroCarregamento = false) => {
-    const userId = localStorage.getItem("usuarioId");
-    const token  = localStorage.getItem("tokenSessao");
+    const session = requireAuth();
 
-    if (!token || !userId) {
-      navigate("/login");
+    if (!session) {
       return;
     }
 
@@ -23,34 +35,65 @@ export function useCarrinho() {
       if (primeiroCarregamento) setLoading(true);
       setErro(null);
 
-      const response = await api.get(`api/pedidos/carrinho/${userId}`);
+      const response = await api.get(`api/pedidos/carrinho/${session.usuarioId}`);
       const itens = response.data.itens || response.data.Itens || [];
 
       setCartItems(itens);
-      setTotal(
-        itens.reduce((acc, item) => {
-          const preco = item.cardapio?.preco || item.preco || item.precoUnitario || 0;
-          return acc + preco * item.quantidade;
-        }, 0)
-      );
+      setTotal(calcularTotal(itens));
     } catch {
-      setErro("Não foi possível carregar os itens do carrinho.");
+      setErro("Nao foi possivel carregar os itens do carrinho.");
     } finally {
       if (primeiroCarregamento) setLoading(false);
     }
-  }, [navigate]);
+  }, [requireAuth]);
 
-  async function removerItem(itemId) {
+  const addToCart = useCallback(
+    async (item, quantity = 1, onSuccess) => {
+      const session = requireAuth();
+
+      if (!session) {
+        return;
+      }
+
+      try {
+        setAddingToCart(true);
+
+        await api.post(`api/pedidos/carrinho/${session.usuarioId}`, {
+          cardapioId: item.id,
+          quantidade: quantity,
+        });
+
+        setSuccessAnimation(true);
+        showNotification?.(`${item.nome} adicionado ao carrinho!`, "success");
+
+        setTimeout(() => {
+          setSuccessAnimation(false);
+          window.dispatchEvent(new Event("cartUpdated"));
+          onSuccess?.();
+        }, 1200);
+      } catch {
+        showNotification?.(
+          "Nao foi possivel adicionar o item. Tente novamente.",
+          "error"
+        );
+      } finally {
+        setAddingToCart(false);
+      }
+    },
+    [requireAuth, showNotification]
+  );
+
+  const removerItem = useCallback(async (itemId) => {
     try {
       setErro(null);
       await api.delete(`api/pedidos/carrinho/item/${itemId}`);
       carregarCarrinho();
     } catch {
-      setErro("Não foi possível remover o item.");
+      setErro("Nao foi possivel remover o item.");
     }
-  }
+  }, [carregarCarrinho]);
 
-  async function atualizarQuantidade(itemId, quantidadeAtual, mudanca) {
+  const atualizarQuantidade = useCallback(async (itemId, quantidadeAtual, mudanca) => {
     const novaQuantidade = quantidadeAtual + mudanca;
 
     if (novaQuantidade <= 0) {
@@ -65,13 +108,28 @@ export function useCarrinho() {
       });
       carregarCarrinho();
     } catch {
-      setErro("Não foi possível atualizar a quantidade do item.");
+      setErro("Nao foi possivel atualizar a quantidade do item.");
     }
-  }
+  }, [carregarCarrinho, removerItem]);
 
   useEffect(() => {
-    carregarCarrinho(true);
-  }, [carregarCarrinho]);
+    if (!carregarAoIniciar) {
+      return;
+    }
 
-  return { cartItems, loading, total, erro, removerItem, atualizarQuantidade };
+    queueMicrotask(() => carregarCarrinho(true));
+  }, [carregarAoIniciar, carregarCarrinho]);
+
+  return {
+    cartItems,
+    loading,
+    total,
+    erro,
+    addToCart,
+    addingToCart,
+    successAnimation,
+    resetSuccess,
+    removerItem,
+    atualizarQuantidade,
+  };
 }
